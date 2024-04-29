@@ -1,0 +1,53 @@
+<%- include('includes/header')%>
+<!-- header ends here -->
+
+<div class="container py-md-5 container--narrow">
+    <%- include('includes/flash') %>
+    <h2>Past Time Scheduler Activity search tool</h2>
+    <p>This is the place to edit or delete past schedules. If you need to change text from an activity, then please visit the <a href="/create-activity/viewall">View All Activity Screen</a> instead.</p>
+
+    <form class="mt-3" action="/time-scheduler/past/select" method="POST">
+        <p>Please select a date range you wish to view:</p>
+        <br>
+
+        <%
+            if (prevDate.startDate != undefined) {%>
+                <div class="contatiner">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label for="startDate">Start Date:</label>
+                            <input required type="date" id="start" name="startDate" value="<%= prevDate.startDate %>" min="2020-01-01">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="endDate">End Date:</label>
+                            <input required type="date" id="start" name="endDate" value="<%= prevDate.endDate %>" min="2020-01-02">
+                        </div>
+                    </div>
+                </div>
+                <br>
+            <%} else {%>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label for="startDate">Start Date:</label>
+                            <input required type="date" id="start" name="startDate" value="" min="2020-01-01">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="endDate">End Date:</label>
+                            <input required type="date" id="start" name="endDate" value="" min="2020-01-02">
+                        </div>
+                    </div>
+                </div>
+                <br>
+            <%}%>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-bg btn-success mt-2">Submit Search</button>
+    </form>
+    
+    <% if (selectedSchedules.length) { %>
+        <%- include('includes/timeScheduleList')%>
+    <% } %>
+    
+  </div>
+
+  <%- include('includes/footer')%>

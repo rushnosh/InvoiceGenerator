@@ -1,0 +1,99 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+    
+    <%- include('includes/flash') %>
+    <h2>Category Screen</h2>
+    <p>Here you create categories and assign rate <strong>overrides</strong> for your clients.</p>
+    <p>Each Category must be assigned to a "Client" before it can host "Activities"</p>
+    <form action="/create-category" method="POST">
+      <div class="form-group">
+        <label for="client-select" class="text-muted mb-1"><small>Select a Client:  </small><span class="oi oi-people"></span></label>
+          <select required class="form-control" name="clientSelect">
+            <option value="" class="disabled">Please Select</option>
+            <% clients.forEach(function(client){ %>
+              <option value="<%= client._id %>"><%= client.clientTitle %></option>
+            <% }) %>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="category-title" class="text-muted mb-1"><small>Category Name</small></label>
+        <input required name="categoryTitle" id="category-title" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="category-override-rate" class="text-muted mb-1"><small><strong>*Optional</strong> Override Rate  - This set rate will "over rule" any rate from within the chosen Client rate's setting.</small></label>
+        <input name="categoryOverrideRate" id="categoryOverrideRate" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      
+      <button class="btn btn-primary">Save New Category</button>  <a href="/" class="btn btn-secondary">Go Back</a>
+    </form>
+
+    <div class="profile-nav nav nav-tabs pt-2 mb-4">
+        <a href="#" class="profile-nav-link nav-item nav-link active"><span class="oi oi-book"></span> Categories: <%= categories.length %> IN TOTAL </a>
+    </div>
+    
+    <div class="list-group">
+        <% categories.forEach(function(category){ 
+            if(category.client != undefined) { %>
+              <div class="list-group-item list-group-item-action container">
+              <div class="row">
+                <div class="col-10">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <span class="oi oi-book"></span>
+                      <strong><%= category.categoryTitle %> </strong> 
+                    </div>
+                    <div class="col-md-5">
+                        <small><span class="oi oi-people"></span>  <%= category.client.clientTitle %> 
+                          <br>Created on <%= category.createdDate.getDate() %>/<%= category.createdDate.getMonth() + 1 %>/<%= category.createdDate.getFullYear() %>
+                          <% let co = category.categoryOverrideRate != undefined ? category.categoryOverrideRate.toString() : ""
+                          if (co.length > 0) { %>
+                            <br><strong> Override rate $<%= category.categoryOverrideRate %></strong> 
+                         <% } %>  
+                        </small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <a href="/category/<%= category._id %>/edit"><button class="edit-activity-button text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button></a>
+                  <a href="/category/<%= category._id %>/delete"><button class="delete-activity-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button></a>
+                </div>
+              </div>
+            </div>
+           <% } else { %>
+            <div class="list-group-item list-group-item-action container no-category-assigned">
+              <div class="row">
+                <div class="col-10">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <span class="oi oi-book"></span>
+                      <strong><%= category.categoryTitle %> </strong> 
+                    </div>
+                    <div class="col-md-5">
+                        <small><span class="oi oi-people"></span>  <strong>No client assigned - please fix </strong>- on <%= category.createdDate.getDate() %>/<%= category.createdDate.getMonth() + 1 %>/<%= category.createdDate.getFullYear() %>
+                          <% let co = category.categoryOverrideRate != undefined ? category.categoryOverrideRate.toString() : ""
+                          if (co.length > 0) { %>
+                            -<strong> Override rate $<%= category.categoryOverrideRate %></strong>  
+                         <% } %>
+                        </small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <a href="/category/<%= category._id %>/edit"><button class="edit-activity-button text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button></a>
+                  <a href="/category/<%= category._id %>/delete"><button class="delete-activity-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button></a>
+                </div>
+              </div>
+            </div>
+           <% }
+        }) %>
+    </div>
+
+  </div> 
+  
+  <%- include('includes/footer') %>

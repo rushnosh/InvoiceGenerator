@@ -1,0 +1,10 @@
+
+// Listing the things that the activity Controller should accomplish
+
+// List Current activities for user
+
+// Add new activity for user
+
+// Edit current activity for the user
+
+// Delete current activity

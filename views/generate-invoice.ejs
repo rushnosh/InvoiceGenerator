@@ -1,0 +1,59 @@
+<%- include('includes/header')%>
+<!-- header ends here -->
+
+<div class="container py-md-5">
+  
+  <%- include('includes/flash') %>
+    <div class="text-center">
+        <h2>Invoice Generator</h2>
+        <p>Please ensure that you have your profile settings up to date with the relevant account details.</p>
+        <form action="/generate-invoice/date" method="POST" class="d-inline">
+
+            <p>Please select a date range you wish to generate invoice for:</p>
+            <br>            <!-- Rounded switch -->
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col-8">
+                            <p>Invoice Generator will use <strong>all</strong> Clients assigned to the account to produce the invoice. <br>
+                            If you like to use just <strong>one</strong> Client, please toggle switch to select one:</p>
+                        </div>
+                        <div class="col-4">
+                            <label for="multiclient" class="switch">
+                                <input type="checkbox" id="multiclient" name="multiclient">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>              
+                <div class="form-group clientSelect clientSelect--hidden">
+                    <label for="clientSelect">Please select a Client to generate invoice for.</label>
+                    <select multiple class="selectpicker form-control" name="clientSelect" id="clientSelect">
+
+                        <% clients.forEach((client) => { %>
+                        <option  type="text" value="<%= client._id %>"><%= client.clientTitle %></option>
+                        <%})
+                        %>
+                    </select>
+                </div>
+                <div class="containter">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="startDate">Start Date:</label>
+                            <input required type="date" id="startDate" name="startDate" value="" min="2020-01-01">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="endDate">End Date:</label>
+                            <input required type="date" id="endDate" name="endDate" value="" min="2020-01-02">
+                        </div>
+                    </div>
+                </div>
+            <br>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn mt-5 mb-5 btn-sm btn-secondary">Generate invoice</button>
+        </form>
+
+    
+    </div>
+</div>
+
+<%- include('includes/footer') %>

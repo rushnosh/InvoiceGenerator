@@ -1,0 +1,67 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+
+    <%- include('includes/flash') %>
+
+    <h2><%= editSchedule.activityDocument.title %></h2>
+    <p><span class="oi oi-book"></span><small> <%= editSchedule.categoryDocument != undefined ? editSchedule.categoryDocument.categoryTitle : "Activity is not linked to a Category" %></small><br>
+    <span class="oi oi-people"></span><small> <%= editSchedule.client != undefined ? editSchedule.client.clientTitle : "Activity is not linked to a Client" %></small></p>
+    <p>Please use the below date and time modifiers to update this schedule.</p>
+    <% if (timeSearch.startDate != undefined) { %>
+        <a class="small font-weight-bold" href="/time-scheduler/past/<%=timeSearch.startDate%>/<%=timeSearch.endDate%>">&laquo; Back to view Search results</a>
+    <% } else { %>
+        <a class="small font-weight-bold" href="/time-scheduler">&laquo; Back to view Today's Schedules</a>
+    <% } %>
+    
+    <% if (timeSearch.startDate != undefined) { %>
+        <form class="mt-3" action="/time-scheduler/<%= editSchedule._id %>/edit/<%=timeSearch.startDate%>/<%=timeSearch.endDate%>" method="POST">
+    <% } else { %>
+        <form class="mt-3" action="/time-scheduler/<%= editSchedule._id %>/edit" method="POST">
+    <% } %>
+        <div class="form-group">
+            <label for="startTime">Start date:</label>
+            <%  function addZero(i) {
+                    if (i < 10) {
+                    i = "0" + i;
+                    }
+                    return i;
+                }
+                let cd = editSchedule.createdDateTime
+                let ed = editSchedule.endDateTime
+                let endTime
+                if (ed != "") {
+                    endTime = addZero(ed.getHours()) + ":" + addZero(ed.getMinutes())
+                }
+
+                let startDate = cd.getFullYear() + "-" + (addZero(cd.getMonth() + 1))  + "-" + (addZero(cd.getDate()))
+                let startTime = addZero(cd.getHours()) + ":" + addZero(cd.getMinutes())
+
+            %>
+            <input required type="date" id="start" name="startDate" value="<%= startDate %>" min="2020-01-01">
+            <br>
+            <label class="mt-2" for="startTime">Start Time:</label>
+            <input required type="time" id="appt" name="startTime" value="<%= startTime %>" min="01:00" max="24:00" >
+            
+            <%
+                if (ed != "") { %>
+                    <br>
+                    <label class="mt-2" for="endTime">End Time:</label>
+                    <input required type="time" id="appt" name="endTime" value="<%= endTime %>" min="01:00" max="24:00" >
+                <% }
+            %>
+            <br>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-primary mt-1">Save Updates</button>
+            <% if (timeSearch.startDate != undefined) { %>
+                <a href="/time-scheduler/past/<%=timeSearch.startDate%>/<%=timeSearch.endDate%>" class="btn btn-secondary mt-1"> Cancel</a> 
+            <% } else { %>
+                <a href="/time-scheduler" class="btn btn-secondary mt-1"> Cancel</a> 
+            <% } %>
+        </div>
+    </form>
+  </div>
+  
+  <%- include('includes/footer') %>

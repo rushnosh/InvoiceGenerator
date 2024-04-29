@@ -1,0 +1,38 @@
+<%- include('includes/header') %>
+  
+  <div class="container py-md-5 container--narrow">
+    
+    <%- include('includes/flash') %>
+
+    <div class="d-flex justify-content-between">
+      <h2><%= activity.title %></h2>
+      <% if (activity.isVisitorOwner) { %>
+        <span class="pt-2">
+            <a href="/activity/<%= activity._id %>/edit" class="text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+            <form class="delete-activity-form d-inline" action="/activity/<%= activity._id %>/delete" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="delete-activity-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+          </span>
+      <% } %>
+    </div>
+      
+    <p class="text-muted small mb-4">
+      <a href="/profile/<%= activity.author.username %>"><img class="avatar-tiny" src="<%= activity.author.avatar %>"></a>
+      Activity Posted by <a href="/profile/<%= activity.author.username %>"><%= activity.author.username %></a> on <%= activity.createdDate.getDate() %>/<%= activity.createdDate.getMonth() + 1 %>/<%= activity.createdDate.getFullYear() %></p>
+    <div class="mb-4">
+      <a href="/create-category"><span class="text-muted small">Category - </span> <%
+        if (activity.categoryDocument == undefined) { %>
+          Uncatergorized
+        <% } else { %>
+          <%= activity.categoryDocument.categoryTitle %>
+       <% }
+        %></a>
+    </div>
+    <div class="body-content">
+      <%- filterUserHTML(activity.body) %>
+    </div>
+    <a class="font-weight-light font-italic" href="/create-activity/viewall"> Back to View All Activities</a>
+  </div>
+  
+  <%- include('includes/footer') %>

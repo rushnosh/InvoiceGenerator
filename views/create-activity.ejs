@@ -1,0 +1,41 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+
+    <%- include('includes/flash') %>
+    <h2>Create New Activity</h2>
+    <p>Activities is where you store your main "Service Text" which will then be displayed from within the Generated Invoice.<br>
+    <strong>NOTE: you cant select a Category if the "Category" does not have a "Client" associated to it.</strong>
+    </p>
+
+    <form action="/create-activity" method="POST">
+      <div class="form-group">
+        <label for="activity-category" class="text-muted mb-1"><small>Select a Category  </small><span class="oi oi-book"></span></label>
+          <select required class="form-control" name="categorySelect">
+            <option value="" class="disabled">Please Select</option>
+            <% categories.forEach(function(category){ 
+              if (category.client != undefined) { %>
+                <option value="<%= category._id %>"><%= category.categoryTitle %> - <span class="oi oi-people"></span> <%= category.client.clientTitle %> </option>
+              <% }
+              %>
+
+            <% }) %>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="activity-title" class="text-muted mb-1"><small>Activity Name - This name will show up on the "Time Scheduler". It will <strong>not</strong> be displayed on the Invoice.</small></label>
+        <input required name="title" id="activity-title" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="activity-body" class="text-muted mb-1"><small>Content which will be placed within the <strong>Service Section</strong> on the created invoice</small></label>
+        <textarea required name="body" id="activity-body" class="body-content tall-textarea form-control" type="text"></textarea>
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-primary">Save New Activity</button>
+    </form>
+  </div> 
+  
+  <%- include('includes/footer') %>

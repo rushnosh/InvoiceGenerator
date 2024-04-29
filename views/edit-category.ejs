@@ -1,0 +1,45 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+
+    <%- include('includes/flash') %>
+
+    <a class="small font-weight-bold" href="/create-category">&laquo; Back to view Categories</a>
+
+    <form class="mt-3" action="/category/<%= category._id %>/edit" method="POST">
+      <div class="form-group">
+        <label for="client-select" class="text-muted mb-1"><small>Select a Client:  </small><span class="oi oi-people"></span></label>
+          <select required class="form-control" name="clientSelect">
+            <%
+            if (category.client != undefined) { %>
+              <option value="<%= category.client._id %>"><%= category.client.clientTitle %></option>
+            <%} else { %>
+              <option disabled value="" selected>Please Select</option>
+            <%}
+           %>
+
+            <% clients.forEach(function(client){
+              let idCompare = category.client != undefined ? category.client._id.toString() : ""
+              let difCompare = client._id.toString()
+              if (idCompare.localeCompare(difCompare) != 0) { %>
+                <option value="<%= client._id %>"><%= client.clientTitle %></option>
+              <% } 
+             })%>
+          </select>
+      </div>       
+      <div class="form-group">
+        <label for="category-title" class="text-muted mb-1"><small>New Category Name</small></label>
+        <input required name="categoryTitle" id="category-title" value="<%= category.categoryTitle %>" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="category-override-rate" class="text-muted mb-1"><small><strong>*Optional</strong> Override Rate  - This set rate will "over rule" any rate from within the chosen Client rate's setting.</small></label>
+        <input name="categoryOverrideRate" id="categoryOverrideRate" value="<%= category.categoryOverrideRate %>" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-primary">Save Updates</button>
+    </form>
+  </div>
+  
+  <%- include('includes/footer') %>

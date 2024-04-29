@@ -1,0 +1,41 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+
+    <%- include('includes/flash') %>
+
+    <a class="small font-weight-bold" href="/activity/<%= activity._id %>">&laquo; Back to activity</a>
+
+    <form class="mt-3" action="/activity/<%= activity._id %>/edit" method="POST">
+      <div class="form-group">
+        <label for="activity-category" class="text-muted mb-1"><small>Select a Category</small></label>
+          <select required class="form-control" name="categorySelect">
+            <option value="" class="disabled">Please Select</option>
+            <% categories.forEach(function(category){ 
+              if (category._id.toString() == activity.categorySelect.toString()) { %>
+                <option selected value="<%= category._id %>"><%= category.categoryTitle %></option>
+             <% } else { %>
+                <option value="<%= category._id %>"><%= category.categoryTitle %></option>
+             <% }
+
+             }) %>
+          </select>
+      </div>
+         
+      <div class="form-group">
+        <label for="activity-title" class="text-muted mb-1"><small>Activity Name</small></label>
+        <input required name="title" id="activity-title" value="<%= activity.title %>" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="activity-body" class="text-muted mb-1"><small>Activity Invoice Content to Update</small></label>
+        <textarea required name="body" id="activity-body" class="body-content tall-textarea form-control" type="text"><%= activity.body %></textarea>
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-primary">Save Updates</button>
+    </form>
+  </div>
+  
+  <%- include('includes/footer') %>

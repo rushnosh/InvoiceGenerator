@@ -1,0 +1,64 @@
+<%- include('includes/header') %>
+  <!-- header ends here -->
+  
+  <div class="container py-md-5">
+
+    <%- include('includes/flash') %>
+
+    <div class="text-center">
+      <h2>Welcome to the Invoice Generator System <strong><%= user.username %></strong></h2>
+      <p>Please ensure you create "Clients", "Categories" and then an "Actvities" before you start using the Time Scheduler.</p>
+      <p>Make sure you fill out your <a href="/profile/<%= user._id %>/settings">Profile Settings</a> before using the <a href="/generate-invoice">Invoice Generator</a>.</p>
+    </div>
+    <div class="container">
+      <div class="row">
+        <%
+          //Place the time scheduler only if the user has activit activities - checked from within the User Controller
+          if (user.hasAct) { %>
+            <div class="col-sm mb-2 mt-5">
+              <h4>Schedule your daily timer</h4>
+              <p>When you have Clients, Categories and Activities created - you can now start scheduling work from within the time scheduler tool.</p>
+              <a href="/time-scheduler"><button class="btn btn-bg btn-success mb-2"><span class="oi oi-timer mr-2"></span>Time Scheduler</button></a>
+              <a href="/time-scheduler/past"><button class="btn btn-bg btn-outline-success mb-2">View Past Schedules</button></a>
+            </div>
+         <% }
+        %>
+
+        <div class="col-sm mb-2 mt-5">
+          <h4>Client Details</h4>
+          <p>Here you can view all of your clients - create new ones, update their details, rates and penalty rates</p>
+          <a href="/view-clients"><button class="btn btn-bg btn-dark mb-2"><span class="oi oi-people mr-2"></span>View/Create Clients</button></a><br>
+          <h4>Categories and Activites</h4>
+          <p class="mt-3">Create and Assign Categories and Activites</p>
+          <a href="/create-category"><button class="btn btn-bg btn-warning mb-2"><span class="oi oi-book mr-2"></span>View/Create Categories</button></a><br>
+          <a href="/create-activity"><button class="btn btn-bg btn-primary mb-2"><span class="oi oi-aperture mr-2"></span>Create Activity</button></a>
+          <p class="mt-3">Veiw All Created Activities</p>
+          <a href="/create-activity/viewall"><button class="btn btn-bg btn-outline-primary">View All Activities</button></a>
+        </div>
+
+          <div class="col-sm mb-2 mt-5">
+            <%
+               //Place the Gen Inv only if the user has activities - checked from within the User Controller
+             if (user.hasAct) { %>
+            <h4>Invoice Generator</h4>
+            <p>Generate new Invoice from Past Time Schedules</p>
+            <a href="/generate-invoice"><button class="btn btn-bg btn-secondary"><span class="oi oi-document mr-2"></span>Generate Invoice</button></a>
+            <% }
+            %>
+            <p class="mt-3">Update Profile Settings</p>
+            <a href="/profile/<%= user._id %>/settings"><button class="btn btn-bg btn-outline-dark"><span class="oi oi-person mr-2"></span>Profile Settings</button></a>
+            
+            <!-- 
+            <form action="/client/publicholidayfetch" method="post">
+              <label for="public holiday" class="mt-3">This is the fetch public holiday data</label>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="btn btn-bg btn-outline-dark"><span class="oi oi-bomb mr-2"></span>Update public holidays</button>
+            </form>
+            -->
+          </div>
+
+      </div>
+    </div> 
+  </div>
+  
+  <%- include('includes/footer') %>

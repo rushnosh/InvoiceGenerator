@@ -1,0 +1,32 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+    
+    <%- include('includes/flash') %>
+    <h2>Client Screen</h2>
+    <p>Here you can view all of your clients, and update their profiles and rates information.</p>
+
+    <a href="/create-client"><button class="btn btn-primary mb-2">Create New Client</button></a>
+    <div class="list-group">
+      <% clients.forEach(function(client){ %>
+          <div class="list-group-item list-group-item-action container">
+            <div class="row">
+              <div class="col-9 col-md-10">
+                <!--<img class="avatar-tiny" src="<%= client.author.avatar %>">-->
+                <span class="oi oi-people"></span>
+                <strong><%= client.clientTitle %></strong> on <%= client.createdDate.getDate() %>/<%= client.createdDate.getMonth() + 1 %>/<%= client.createdDate.getFullYear() %>
+              </div>
+              <div class="col-3 col-md-2">
+                <a href="/client/<%= client._id %>/details"><button class="edit-activity-button text-primary mr-2" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button></a>
+                <a href="/client/<%= client._id %>/delete"><button class="delete-activity-button text-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button></a>
+              </div>
+            </div>
+          </div>
+     <% }) %>
+  </div>
+  </br><a href="/"><button class="btn btn-secondary mb-2">Back to Home</button></a>
+  </div> 
+  
+  <%- include('includes/footer') %>

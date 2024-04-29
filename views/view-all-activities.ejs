@@ -1,0 +1,57 @@
+<%- include('includes/header')%>
+<!-- header ends here -->
+
+<div class="container py-md-5 container--narrow">
+  
+  <%- include('includes/flash') %>
+
+    <h2><img class="avatar-small" src="<%= profileAvatar %>"> <%= profileUsername %>'s Activities</h2>
+    <p>Here, you can view all of your current activities setup and update them if required:</p>
+    <div class="profile-nav nav nav-tabs pt-2 mb-4">
+      <hr>
+    </div>
+  
+    <div class="list-group">
+          <% 
+            let mainCategory = ""
+            activities.forEach(function(category){
+              if(category.categoryDocument != undefined){
+                if( mainCategory != category.categoryDocument.categoryTitle) {
+                  mainCategory = category.categoryDocument.categoryTitle 
+                  let clientTitle = typeof category.client != 'undefined' ? '<small><span class="oi oi-people"></span> ' + category.client.clientTitle + '</small>' : '<a href="/create-category"><small style="color: red";> No Client Assign - please fix </small></a>'
+                  %>
+                  <h3 class="mt-3" style="opacity: .9;font-size: 1.3em;"><span class="oi oi-book"></span> <%= category.categoryDocument.categoryTitle %> - <%- clientTitle %></h3> 
+                      <% activities.forEach(function(activity){
+                        if (activity.categoryDocument != undefined) {
+                          if (mainCategory == activity.categoryDocument.categoryTitle){ %>
+                            <a href="/activity/<%= activity._id %>" class="list-group-item list-group-item-action">
+                                <strong><%= activity.title %></strong> created on <%= activity.createdDate.getDate() %>/<%= activity.createdDate.getMonth() + 1 %>/<%= activity.createdDate.getFullYear() %>
+                            </a>
+                        <% } 
+                        }
+
+                      }) %>
+              <% }
+              } else {
+                if( mainCategory != "No Category Assigned") {
+                  mainCategory = "No Category Assigned" %>
+                  <h3 class="mt-3" style="opacity: .9;font-size: 1.3em;"><%= mainCategory %></h3>
+                  <p>Please fix the below Activities by assigning new categories, or delete them:</p>
+                      <% activities.forEach(function(activity){ 
+                        if (typeof activity.categoryDocument === 'undefined'){ %>
+                          <a href="/activity/<%= activity._id %>" class="list-group-item list-group-item-action no-category-assigned">
+                              <strong><%= activity.title %></strong> created on <%= activity.createdDate.getDate() %>/<%= activity.createdDate.getMonth() + 1 %>/<%= activity.createdDate.getFullYear() %>
+                          </a>
+                      <% } 
+                      }) %>
+                <div class="profile-nav nav nav-tabs pt-2 mb-4">
+                  <hr>
+                </div>
+               <% }  
+              }
+
+            }) %>
+    </div>
+  </div>
+
+  <%- include('includes/footer')%>

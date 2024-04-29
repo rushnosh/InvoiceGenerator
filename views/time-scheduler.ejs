@@ -1,0 +1,45 @@
+<%- include('includes/header')%>
+<!-- header ends here -->
+
+<div class="container py-md-5 container--narrow">
+  
+  <%- include('includes/flash') %>
+
+    <h2><img class="avatar-small" src="<%= activities[0].author.avatar %>">Time Scheduler for <%= activities[0].author.username %>  
+    </h2>
+    <form class="mt-3" action="/time-scheduler/create" method="POST">
+      <div class="form-group">
+        <label for="selectActivity">Select an Activity to start tracking:</label><br>
+        <select required name="activityId" class="selectpicker" data-width="auto" data-live-search="true" id="selectActivity">
+          <option value="">Please Select Activity</option>
+        <% 
+          let mainCategory = ""
+          activities.forEach(function(category){
+            if (typeof category.categoryDocument != 'undefined' && typeof category.client != 'undefined'){
+              if( mainCategory != category.categoryDocument.categoryTitle) {
+                mainCategory = category.categoryDocument.categoryTitle 
+                %>
+                <optgroup label="<%= category.categoryDocument.categoryTitle %> - <%= category.client.clientTitle %>">
+
+                    <% activities.forEach(function(activity){
+                      if (typeof activity.categoryDocument != 'undefined'){
+                        if (mainCategory == activity.categoryDocument.categoryTitle){ %>
+                          <option  type="text" value="<%= activity._id %>"><%= activity.title %></option>
+                      <% }
+                      } 
+                    }) %>
+                </optgroup>
+            <% }
+            }
+          }) %>
+        </select>
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="submit" name="startEvent" value="Start Activity" class="btn btn-primary">
+    </form>
+
+    <%- include('includes/timeScheduleList')%>
+
+  </div>
+
+  <%- include('includes/footer')%>

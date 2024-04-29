@@ -1,0 +1,34 @@
+<%- include('includes/header')%>
+<!-- header ends here -->
+
+<div class="container py-md-5">
+  
+  <%- include('includes/flash') %>
+
+  <div class="row align-items-center">
+    <div class="col-lg-7 py-3 py-md-5">
+      <h1 class="display-3">Password Reset Form</h1>      
+      <p class="text-muted">If you are an exsisting user, but forgot your password. No problem, submit your email address into the text box, press the "Send Password Reset" button, then check your inbox for the reset password link.</p>
+    </div>
+    <div class="col-lg-5 pl-lg-5 pb-3 py-lg-5">
+      <form action="/forgotpassword" method="POST" id="forgotpassword-form">
+
+        <% regErrors.forEach(function(message){ %>
+          <div class="alert alert-danger small"><%= message %></div>
+        <% }) %>
+
+          <div class="form-group">
+            <label for="forgotEmail" class="text-muted mb-1"><small>Email Address to send password reset email to</small></label>
+            <input name="forgotEmail" id="forgotEmail" class="form-control" type="text" placeholder="Email address" autocomplete="off">
+          </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="py-3 mt-4 btn btn-lg btn-success btn-block">Send Password Reset</button>
+          
+        </form>
+        <div class="mt-2"><a href="/">Go back HOME</a></div>
+
+      </div>
+    </div>
+  </div>
+  
+<%- include('includes/footer') %>

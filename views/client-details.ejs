@@ -1,0 +1,68 @@
+<%- include('includes/header') %>
+
+  <!-- header ends here -->
+  
+  <div class="container py-md-5 container--narrow">
+    
+    <%- include('includes/flash') %>
+    <h2>Client Details - <%= clientData.clientTitle %></h2>
+
+    <form action="/client/<%= clientData._id %>/edit" method="POST">
+        <div class="form-group">
+            <label for="client-title" class="text-muted mb-1"><small>Client/Business Name</small></label>
+            <input required name="clientTitle" id="client-title" class="form-control form-control-lg form-control-title" type="text" placeholder="" autocomplete="off" value="<%= clientData.clientTitle %>">
+        </div>
+        <div class="form-group">
+            <p>To Details</p>
+            <label for="toaddress1" class="text-muted mb-1"><small>Address 1:</small></label>
+            <input type="text" class="form-control" name="toaddress1" value="<%= clientData.toaddress1 %>">
+            <label for="toaddress2" class="text-muted mb-1"><small>Address 2:</small></label>
+            <input type="text" class="form-control" name="toaddress2" value="<%= clientData.toaddress2 %>">
+            <label for="toaddress3" class="text-muted mb-1"><small>Address 3:</small></label>
+            <input type="text" class="form-control" name="toaddress3" value="<%= clientData.toaddress3 %>">
+        </div>
+        <div class="form-group">
+            <p>For Details</p>
+            <label for="foraddress1" class="text-muted mb-1"><small>Address 1:</small></label>
+            <input type="text" class="form-control" name="foraddress1" value="<%= clientData.foraddress1 %>">
+            <label for="foraddress2" class="text-muted mb-1"><small>Address 2:</small></label>
+            <input type="text" class="form-control" name="foraddress2" value="<%= clientData.foraddress2 %>">
+            <label for="foraddress3" class="text-muted mb-1"><small>Address 3:</small></label>
+            <input type="text" class="form-control" name="foraddress3" value="<%= clientData.foraddress3 %>">
+        </div>
+        <div class="form-group">
+            <p>Rate Details</p>
+            <label for="baseRate" class="text-muted mb-1"><small>Base Rate:</small></label>
+            <input type="text" class="form-control" name="baserate" value="<%= clientData.baserate %>">
+            <label class="mt-2" for="baseRateStartTime"><small>Start Time:</small></label>
+            <input required type="time" id="appt" name="baseRateStartTime" value="<%= clientData.baseRateStartTime %>" min="01:00" max="24:00" >
+            <label class="mt-2" for="baseRateEndTime"><small>End Time:</small></label>
+            <input required type="time" id="appt" name="baseRateEndTime" value="<%= clientData.baseRateEndTime %>" min="01:00" max="24:00" >
+            <br>
+            <label for="penaltyrate" class="text-muted mb-1"><small>Penalty Rate:</small></label>
+            <input type="text" class="form-control" name="penaltyrate" value="<%= clientData.penaltyrate %>">
+            <p>NOTE: penalty rate will be calculated based on "outside" time range of the Base Rate time range above</p>
+            <br>
+            <p>Optional Rates:</p>
+            <p><small>The below rates for Saturady and Sunday will override the above base rate and penalty rates. There is no "penalty rate" for either Saturday or Sunday rates.</small></p>
+            <label for="saturdayRate" class="text-muted mb-1"><small>Saturday Rate:</small></label>
+            <input type="text" class="form-control" name="saturdayRate" value="<%= clientData.saturdayRate %>">
+            <label for="sundayRate" class="text-muted mb-1"><small>Sunday Rate:</small></label>
+            <input type="text" class="form-control" name="sundayRate" value="<%= clientData.sundayRate %>">
+            <br>
+            <p>NOTE: Public Holiday rates will overwrite "any" rates calculation, including "Category" override rates</p>
+            <label for="publicHolidayRate" class="text-muted mb-1"><small>Public Holiday Rate:</small></label>
+            <input type="text" class="form-control" name="publicHolidayRate" value="<%= clientData.publicHolidayRate %>">
+            <p>Invoice Footer Note</p>
+            <label for="footerNote" class="mb-0 mt-1">Footer Note - This will be shown in BOLD at the bottom of the invoice.</label>
+            <input type="text" class="form-control" name="footerNote" value="<%= clientData.footerNote %>">
+        </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-primary">Save Updates</button>
+    </form>
+    <a href="/view-clients" ><button class="mt-2 btn btn-secondary">Cancel</button></a>
+
+
+  </div> 
+  
+  <%- include('includes/footer') %>
