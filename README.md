@@ -1,4 +1,4 @@
-# NDISInvoiceGenerator
+# Invoice Generator
 Create an application to cater for multiple clients and create a process for easy invoice generation.
 
 This was created to assist NDIS workers in automating their invoice generation tasks.
